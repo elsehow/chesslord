@@ -5,13 +5,14 @@ from ray import tune
 # PettingZooEnv wrapper to make PettingZoo environments compatible with RLLib
 from ray.rllib.env import PettingZooEnv
 # PPO (Proximal Policy Optimization) algorithm configuration from RLLib
+ # TODO Claude picked PPO. Look to prior work, see issue #1.
 from ray.rllib.algorithms.ppo import PPOConfig
 # environment registry to register custom environments with Ray
 from ray.tune.registry import register_env
 
 # Number of parallel environments
 # Start with 2-4 runners and monitor your system
-# Each additional runner may have diminishing returns - Ray has some coordination overhead.
+# TODO Each additional runner *may* have diminishing returns - Ray has some coordination overhead. Investigate.
 NUM_ENV_RUNNERS = 4
 
 # Number of episodes to train for
@@ -32,9 +33,7 @@ def env_creator():
 # This makes the PettingZoo chess environment compatible with RLLib's training framework
 register_env("chess_env", lambda config: PettingZooEnv(env_creator()))
 
-# Create a PPO algorithm configuration object for multi-agent chess training
 config = (
-    # Start with base PPO configuration
     PPOConfig()
     # Configure the environment settings
     .environment(
@@ -47,11 +46,13 @@ config = (
     .framework("torch")
     # Configure API stack settings for RLLib compatibility
     .api_stack(
+        # TODO These magically made things work. Investigate why this is necessary, consequences of changing these.
         enable_rl_module_and_learner=False,  # Use older RLLib API for stability
         enable_env_runner_and_connector_v2=False  # Use older environment runner API
     )
     # Configure the neural network model architecture
     .training(
+        # TODO Claude designed this model architecture. Look to prior work, see issue #1.
         model={
             # Define convolutional layers for processing the chess board (8x8 grid)
             "conv_filters": [
