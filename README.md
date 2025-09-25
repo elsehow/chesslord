@@ -33,3 +33,4 @@ after running, see training progress with:
 tensorboard --logdir=~/ray_results
 ```
 
+filter tags for "loss" to see policy/total/vf loss
