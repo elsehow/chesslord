@@ -33,4 +33,7 @@ after running, see training progress with:
 tensorboard --logdir=~/ray_results
 ```
 
-filter tags for "loss" to see policy/total/vf loss
+## tips:
+
+- filter tags for "loss" to see policy/total/vf loss
+- all checkpointing is built-in; look in the specified output directory (`~/ray_results`). you can use these model weights in subsequent experiments.
